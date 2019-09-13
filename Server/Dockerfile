@@ -15,7 +15,7 @@ RUN touch /run/openrc/softlevel
 RUN sh ./createfile.sh
 ENTRYPOINT ["/bin/sh","/home/ServerFile.sh"]
 
-RUN adduser --gecos "" server
+RUN adduser --disabled-password --gecos "" server
 RUN echo server:123456 | chpasswd
 
 
