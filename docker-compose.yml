@@ -1,0 +1,42 @@
+version : '2'
+services :
+     server:
+            container_name: servercontainer
+            image: advaitkukade/serverside1:1.0
+            volumes:
+                 - servervol:/serverdata
+            networks:
+                 mydriver1:
+                   ipv4_address: 172.10.0.10
+            tty: true
+
+     client:
+            container_name: clientcontainer
+            image: advaitkukade/clientside1:1.0
+            volumes:
+                 - clientvol:/clientdata
+            environment:
+                 - SSH_CLIENT=172.10.0.10
+                 - SSH_CONNECTION=172.10.0.11 172.10.0.10 
+                 - USER=server
+                 - PASSWORD=123456
+            networks:
+                mydriver1:
+                   ipv4_address: 172.10.0.11
+            tty: true
+            depends_on: 
+              - server
+
+volumes:
+   clientvol:
+   servervol:
+
+networks:
+  mydriver1:
+    driver: bridge
+    ipam:
+        driver: default
+        config:
+          - subnet: "172.10.0.0/20"
+
+
